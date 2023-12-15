@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "543272945084",
+    "project_id": "nextfilm-23cf7",
+    "storage_bucket": "nextfilm-23cf7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543272945084:android:5b99040fb78819b22557b9",
+        "android_client_info": {
+          "package_name": "com.example.nextfilm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsR-eJHlDEa64p6twhL3_eyhj9MNJ4jCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
