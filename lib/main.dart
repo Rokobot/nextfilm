@@ -26,7 +26,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {},
+      routes: {
+        '/HomePage': (context) => const HomePage(),
+        '/SignInPage': (context) => const SignInPage(),
+        '/SignUpPage': (context) => const SignUpPage(),
+      },
       home: Scaffold(
         backgroundColor: Colors.white,
         body: user ? HomePage() : SignUpPage(),

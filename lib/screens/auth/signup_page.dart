@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nextfilm/extentions/extentions.dart';
+import 'package:nextfilm/widgets/widgets.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -20,18 +21,63 @@ class _SignUpPageState extends State<SignUpPage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Sign up'),
+                Text(
+                  'Sign up',
+                  style: TextStyle(fontSize: 42),
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 8, bottom: 10),
                   child: Divider(
                     height: 0.2,
                     color: Colors.grey,
                   ),
                 ),
-                TextFormField(
-                  key: _keyValue,
-                  decoration: InputDecoration().custmDecoration,
-                )
+                Form(
+                    key: _keyValue,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(hintText: 'username')
+                                .custmDecoration,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(hintText: 'email')
+                                .custmDecoration,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(hintText: 'password')
+                                .custmDecoration,
+                          ),
+                        ),
+                      ],
+                    )),
+                MaterialButton(
+                  color: Colors.green,
+                  onPressed: () {},
+                  child: Text(
+                    'sign up',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(
+                  height: 21,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      nextScreen(context, '/SignInPage');
+                    },
+                    child: Text('already have an account?'))
               ],
             ),
           ),
