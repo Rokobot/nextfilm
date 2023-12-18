@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nextfilm/extentions/extentions.dart';
 import 'package:nextfilm/widgets/widgets.dart';
@@ -63,11 +64,16 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(
                 height: 21,
               ),
-              GestureDetector(
-                  onTap: () {
-                    replaceNextScreen(context, '/SignUpPage');
-                  },
-                  child: Text('no have any account?'))
+              Text.rich(TextSpan(text: 'no have any account?', children: [
+                TextSpan(
+                    text: 'SignUp',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap =
+                          () => {replaceNextScreen(context, '/SignUpPage')})
+              ])),
             ],
           ),
         ),

@@ -8,3 +8,8 @@ nextScreen(context, name) {
 replaceNextScreen(context, name) {
   return Navigator.pushReplacementNamed(context, name);
 }
+
+showSnackbar(context, message) {
+  return ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text(message)));
+}

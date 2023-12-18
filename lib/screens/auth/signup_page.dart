@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nextfilm/extentions/extentions.dart';
 import 'package:nextfilm/widgets/widgets.dart';
@@ -64,7 +65,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     )),
                 MaterialButton(
                   color: Colors.green,
-                  onPressed: () {},
+                  onPressed: () {
+                    validate();
+                  },
                   child: Text(
                     'sign up',
                     style: TextStyle(color: Colors.white),
@@ -73,16 +76,30 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   height: 21,
                 ),
-                GestureDetector(
-                    onTap: () {
-                      nextScreen(context, '/SignInPage');
-                    },
-                    child: Text('already have an account?'))
+                Text.rich(TextSpan(text: 'already have an account?', children: [
+                  TextSpan(
+                      text: 'SignIn',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap =
+                            () => {replaceNextScreen(context, '/SignInPage')})
+                ]))
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  validate() {
+    if (_keyValue.currentState!.validate()) {
+      return showSnackbar(context, 'succes');
+    } else {
+      return null;
+    }
   }
 }
