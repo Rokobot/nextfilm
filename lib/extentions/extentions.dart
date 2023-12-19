@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Custom Decoration of input border
 extension customDecoration on InputDecoration {
   static final customEnabled = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
