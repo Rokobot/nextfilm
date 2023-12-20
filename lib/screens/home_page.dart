@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nextfilm/helper/helper.dart';
-import 'package:nextfilm/services/auth_firebase_service.dart';
-import 'package:nextfilm/widgets/widgets.dart';
+import 'package:nextfilm/widgets/drawer_ui.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,56 +26,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Home page'),
-      ),
-      drawer: Drawer(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DrawerHeader(
-              child: Container(
-            width: double.infinity,
-            child: Card(
-              color: Colors.transparent,
-              elevation: 97,
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Image.asset('assets/film.png'),
-              ),
-            ),
-          )),
-          Card(
-            child: ListTile(
-              leading: Text(
-                username.toString(),
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
+        body: SafeArea(
+          child: Center(
+            child: Text('Home page'),
           ),
-          Card(
-            child: ListTile(
-              leading: Text(email.toString(), style: TextStyle(fontSize: 15)),
-            ),
-          ),
-          Expanded(
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: MaterialButton(
-                    color: Colors.red,
-                    child: Text(
-                      'logout',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      replaceNextScreen(context, '/SignUpPage');
-                    })),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-      )),
-    );
+        ),
+        drawer: Drawer(
+            child: DrawerUI(
+          username: username.toString(),
+          email: email.toString(),
+        )));
   }
 }

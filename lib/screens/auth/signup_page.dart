@@ -7,7 +7,7 @@ import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/const/consts.dart';
 import 'package:nextfilm/extentions/extentions.dart';
 import 'package:nextfilm/helper/helper.dart';
-import 'package:nextfilm/widgets/widgets.dart';
+import 'package:nextfilm/widgets/methods.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

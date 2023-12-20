@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:nextfilm/screens/auth/signup_page.dart';
 import 'package:nextfilm/services/auth_firebase_service.dart';
-import 'package:nextfilm/widgets/widgets.dart';
+import 'package:nextfilm/widgets/methods.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

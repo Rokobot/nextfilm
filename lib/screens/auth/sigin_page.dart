@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/extentions/extentions.dart';
 import 'package:nextfilm/helper/helper.dart';
-import 'package:nextfilm/widgets/widgets.dart';
+import 'package:nextfilm/widgets/methods.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
