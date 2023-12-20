@@ -8,7 +8,6 @@ import 'package:nextfilm/screens/auth/sigin_page.dart';
 import 'package:nextfilm/screens/auth/signup_page.dart';
 import 'package:nextfilm/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -32,10 +31,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HelperFunction().checkDataFromSf().then((value) {
+    check();
+  }
+
+  check() async {
+    await HelperFunction().checkDataFromSf().then((value) {
       setState(() {
         user = value;
-        print(user);
       });
     });
   }

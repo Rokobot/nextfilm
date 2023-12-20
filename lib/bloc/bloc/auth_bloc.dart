@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:nextfilm/screens/auth/signup_page.dart';
+import 'package:nextfilm/services/auth_firebase_service.dart';
+import 'package:nextfilm/widgets/widgets.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -12,12 +14,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   //To sign up firebase-firestore
-  SignupMethod(SignupEvent event, Emitter<AuthState> emit) {
+  SignupMethod(SignupEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     if (event.username.isNotEmpty &&
         event.email.isNotEmpty &&
         event.password.isNotEmpty) {
-      emit(AuthSucces());
+      await AuthFirebaseService(
+              username: event.username,
+              email: event.email,
+              password: event.password)
+          .signupUser()
+          .then((value) {
+        if (value == true) {
+          emit(AuthSucces());
+        } else {
+          print('Value ------------> $value');
+        }
+      });
     } else {
       emit(AuthError(error: 'Check out your information'));
     }

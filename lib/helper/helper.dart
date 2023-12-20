@@ -26,11 +26,12 @@ class HelperFunction {
   //Check user data
   Future<bool> checkDataFromSf() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    String username = sf.getString('username')!;
-    String email = sf.getString('email')!;
-    String password = sf.getString('password')!;
-    return username.isNotEmpty && email.isNotEmpty && password.isNotEmpty
-        ? true
-        : false;
+    String username = sf.getString('username').toString();
+    String email = sf.getString('email').toString();
+    String password = sf.getString('password').toString();
+    print('${username.runtimeType} ----> $username');
+    return username == 'null' && email == 'null' && password == 'null'
+        ? false
+        : true;
   }
 }

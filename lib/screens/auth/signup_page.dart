@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +48,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     return showSnackbar(context, state.error);
                   });
+                }
+                if (state is AuthLoading) {
+                  return Center(
+                    child: BackdropFilter(
+                      child: CircularProgressIndicator(color: Colors.red),
+                      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                    ),
+                  );
                 }
                 return signupWidget(context);
               },
@@ -141,9 +151,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   username: username.text.trim(),
                   email: email.text.trim(),
                   password: password.text.trim()));
-            }).then((value) {
+            }).then((_) {
               HelperFunction().saveDataFromSf(username.text.trim(),
                   email.text.trim(), password.text.trim());
+              replaceNextScreen(context, '/HomePage');
             });
           },
           child: Text(
