@@ -8,6 +8,8 @@ final class AuthLoading extends AuthState {}
 
 final class AuthSucces extends AuthState {}
 
+final class AuthSignOut extends AuthState {}
+
 final class AuthError extends AuthState {
   final String error;
   AuthError({required this.error});

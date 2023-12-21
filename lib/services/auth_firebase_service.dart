@@ -29,7 +29,7 @@ class AuthFirebaseService {
     try {
       final User = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (User != null) {
+      if (User.user != null) {
         return true;
       } else {
         return false;
@@ -43,6 +43,7 @@ class AuthFirebaseService {
   Future<dynamic> getSignOut() async {
     try {
       await _auth.signOut();
+      return true;
     } catch (e) {
       return e;
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nextfilm/helper/helper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/widgets/drawer_ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,31 +11,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? username;
-  String? email;
   @override
   void initState() {
     super.initState();
-    HelperFunction().getDataFromSF().then((value) {
-      setState(() {
-        username = value['username'];
-        email = value['email'];
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: SafeArea(
           child: Center(
             child: Text('Home page'),
           ),
         ),
-        drawer: Drawer(
-            child: DrawerUI(
-          username: username.toString(),
-          email: email.toString(),
-        )));
+        drawer: BlocProvider(
+          create: (context) => AuthBloc(),
+          child: Drawer(child: DrawerUI()),
+        ));
   }
 }

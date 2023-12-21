@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<SigninEvent>(SigninMethod);
     on<SignupEvent>(SignupMethod);
+    on<SignOutEvent>(SignoutMethd);
   }
 
   //To sign up firebase-firestore
@@ -27,9 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .then((value) {
         if (value == true) {
           emit(AuthSucces());
-        } else {
-          print('Value ------------> $value');
-        }
+        } else {}
       });
     } else {
       emit(AuthError(error: 'Check out your information'));
@@ -37,12 +36,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   //To sign in firebase-firestore
-  SigninMethod(SigninEvent event, Emitter<AuthState> emit) {
+  SigninMethod(SigninEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     if (event.email.isNotEmpty || event.password.isNotEmpty) {
-      emit(AuthSucces());
+      await AuthFirebaseService(
+              email: event.email, password: event.password, username: '')
+          .siginUser()
+          .then((value) {
+        print('1val ---->>> $value');
+
+        if (value == true) {
+          print('val ---->>> $value');
+          emit(AuthSucces());
+          return true;
+        } else {
+          emit(AuthError(error: value.toString()));
+        }
+      });
     } else {
       emit(AuthError(error: 'Check out your information'));
     }
+  }
+
+  SignoutMethd(SignOutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    await AuthFirebaseService(email: '', password: '', username: '')
+        .getSignOut()
+        .then((value) {
+      if (value == true) {
+        emit(AuthSignOut());
+      } else {
+        emit(AuthError(error: value));
+      }
+    });
   }
 }

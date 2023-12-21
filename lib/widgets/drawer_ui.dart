@@ -1,19 +1,50 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/const/consts.dart';
+import 'package:nextfilm/helper/helper.dart';
+import 'package:nextfilm/services/auth_firebase_service.dart';
+import 'package:nextfilm/widgets/methods.dart';
 
 class DrawerUI extends StatefulWidget {
-  String username;
-  String email;
-  DrawerUI({super.key, required this.username, required this.email});
+  DrawerUI({super.key});
 
   @override
   State<DrawerUI> createState() => _DrawerUIState();
 }
 
 class _DrawerUIState extends State<DrawerUI> {
+  String? username;
+  String? email;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HelperFunction().getDataFromSF().then((value) {
+      setState(() {
+        username = value['username'];
+        email = value['email'];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthSignOut) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            return replaceNextScreen(context, '/SignInPage');
+          });
+        }
+        return drawerMethod(context);
+      },
+    );
+    ;
+  }
+
+  Container drawerMethod(BuildContext context) {
     return Container(
       color: backgroudnColor,
       child: Padding(
@@ -22,21 +53,21 @@ class _DrawerUIState extends State<DrawerUI> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DrawerHeader(
-                child: CircleAvatar(
-              radius: 100,
-              child: Container(
-                  color: Colors.blue,
-                  width: 140,
-                  height: 140,
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 30, sigmaY: 25),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage('assets/film.jpg'),
+                child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.blue,
                     ),
-                  )),
-            )),
+                    width: 150,
+                    height: 1550,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage('assets/film.jpg'),
+                      ),
+                    ))),
             Divider(
               indent: 50,
               endIndent: 50,
@@ -51,15 +82,15 @@ class _DrawerUIState extends State<DrawerUI> {
                   backgroundColor: backgroudnColor,
                   radius: 23,
                   child: Text(
-                    widget.username.toString().toUpperCase().substring(0, 1),
+                    username.toString().toUpperCase().substring(0, 1),
                     style: TextStyle(fontSize: 30, color: Colors.blue),
                   ),
                 ),
                 title: Text(
-                  widget.username.toString(),
+                  username.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(widget.email.toString()),
+                subtitle: Text(email.toString()),
               ),
             ),
             SizedBox(
@@ -81,7 +112,9 @@ class _DrawerUIState extends State<DrawerUI> {
                         'logout',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {})),
+                      onPressed: () async {
+                        context.read<AuthBloc>().add(SignOutEvent());
+                      })),
             ),
             SizedBox(
               height: 10,
@@ -90,6 +123,5 @@ class _DrawerUIState extends State<DrawerUI> {
         ),
       ),
     );
-    ;
   }
 }

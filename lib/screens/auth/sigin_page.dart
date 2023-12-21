@@ -48,9 +48,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 );
               }
-              if (state is AuthSucces) {
-                return signinWidget(context);
-              }
+
               if (state is AuthError) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   return showSnackbar(context, state.error);
@@ -106,13 +104,9 @@ class _SignInPageState extends State<SignInPage> {
         MaterialButton(
           color: Colors.green,
           onPressed: () {
-            Future(() {
-              context.read<AuthBloc>().add(SigninEvent(
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim()));
-            }).then((value) {
-              replaceNextScreen(context, '/HomePage');
-            });
+            context.read<AuthBloc>().add(SigninEvent(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim()));
           },
           child: Text(
             'sign in',
