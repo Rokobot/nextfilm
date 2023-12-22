@@ -17,9 +17,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool _visibilty = false;
-  TextEditingController username = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroudnColor,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -66,115 +67,115 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Column signupWidget(BuildContext context) {
+  signupWidget(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Sign up',
-          style: TextStyle(fontSize: 42),
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 10),
-          child: Divider(
-            height: 0.2,
-            color: Colors.grey,
+        Text('Nextfilm', style: TextStyle(color: Colors.red, fontSize: 60),),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30)
           ),
-        ),
-        Form(
-            key: _keyValue,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: username,
-                    validator: (value) {
-                      if (value.toString().isEmpty) {
-                        return 'username is invalid';
-                      }
-                    },
-                    decoration:
-                        InputDecoration(hintText: 'username').custmDecoration,
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                  key: _keyValue,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: usernameController,
+                          validator: (value) {
+                            if (value.toString().isEmpty) {
+                              return 'username is invalid';
+                            }
+                          },
+                          decoration:
+                          InputDecoration(hintText: 'username').custmDecoration,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: emailController,
+                          validator: (value) {
+                            return value!.isEmpty ||
+                                !RegExp(emailModel).hasMatch(value)
+                                ? 'Enter valid mail'
+                                : null;
+                          },
+                          decoration:
+                          InputDecoration(hintText: 'email').custmDecoration,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: passwordController,
+                          obscureText: _visibilty,
+                          validator: (value) {
+                            if (value.toString().length < 6) {
+                              return 'Enter password then 6 character';
+                            }
+                          },
+                          decoration: InputDecoration(
+                              hintText: 'password',
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _visibilty = !_visibilty;
+                                    });
+                                  },
+                                  icon: Icon(_visibilty
+                                      ? Icons.visibility_off
+                                      : Icons.visibility)))
+                              .custmDecoration,
+                        ),
+                      ),
+                    ],
+                  )),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: () {
+                  validate();
+                  context.read<AuthBloc>().add(SignupEvent(
+                      username: usernameController.text.trim(),
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                      context: context
+                  ));
+                },
+                child: Text(
+                  'sign up',
+                  style: TextStyle(color: Colors.white),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: email,
-                    validator: (value) {
-                      return value!.isEmpty ||
-                              !RegExp(emailModel).hasMatch(value)
-                          ? 'Enter valid mail'
-                          : null;
-                    },
-                    decoration:
-                        InputDecoration(hintText: 'email').custmDecoration,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: password,
-                    obscureText: _visibilty,
-                    validator: (value) {
-                      if (value.toString().length < 6) {
-                        return 'Enter password then 6 character';
-                      }
-                    },
-                    decoration: InputDecoration(
-                            hintText: 'password',
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _visibilty = !_visibilty;
-                                  });
-                                },
-                                icon: Icon(_visibilty
-                                    ? Icons.visibility_off
-                                    : Icons.visibility)))
-                        .custmDecoration,
-                  ),
-                ),
-              ],
-            )),
-        MaterialButton(
-          color: Colors.green,
-          onPressed: () {
-            validate();
-            Future(() {
-              context.read<AuthBloc>().add(SignupEvent(
-                  username: username.text.trim(),
-                  email: email.text.trim(),
-                  password: password.text.trim()));
-            }).then((_) {
-              HelperFunction().saveDataFromSf(username.text.trim(),
-                  email.text.trim(), password.text.trim());
-              replaceNextScreen(context, '/HomePage');
-            });
-          },
-          child: Text(
-            'sign up',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        SizedBox(
-          height: 21,
-        ),
-        Text.rich(TextSpan(text: 'already have an account?', children: [
-          TextSpan(
-              text: 'SignIn',
-              style: TextStyle(
-                color: Colors.blue,
-                decoration: TextDecoration.underline,
               ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => {replaceNextScreen(context, '/SignInPage')})
-        ]))
+              SizedBox(
+                height: 21,
+              ),
+              Text.rich(TextSpan(text: 'already have an account?', children: [
+                TextSpan(
+                    text: 'SignIn',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => {replaceNextScreen(context, '/SignInPage')})
+              ])),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

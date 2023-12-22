@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
+import 'package:nextfilm/const/consts.dart';
 import 'package:nextfilm/extentions/extentions.dart';
 import 'package:nextfilm/helper/helper.dart';
 import 'package:nextfilm/widgets/methods.dart';
@@ -23,107 +24,115 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    HelperFunction().getDataFromSF().then((value) {
-      setState(() {
-        email = value['email'];
-        password = value['password'];
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthInitial) {
-                return signinWidget(context);
-              }
-              if (state is AuthLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.red,
-                  ),
-                );
-              }
-
-              if (state is AuthError) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  return showSnackbar(context, state.error);
-                });
-              }
-              return signinWidget(context);
-            },
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: backgroudnColor,
+          body: SafeArea(
+            child: Center(
+              child: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthInitial) {
+                    return signinWidget(context);
+                  }
+                  if (state is AuthLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
+                    );
+                  }
+                  if (state is AuthSucces) {
+                    return signinWidget(context);
+                  }
+                  if (state is AuthError) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      return showSnackbar(context, state.error);
+                    });
+                  }
+                  return signinWidget(context);
+                },
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Column signinWidget(BuildContext context) {
+  signinWidget(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Sign in',
-          style: TextStyle(fontSize: 42),
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-          child: Divider(
-            height: 0.2,
-            color: Colors.grey,
+        Text('Nextfilm', style: TextStyle(color: Colors.red, fontSize: 60),),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30)
           ),
-        ),
-        Form(
-            key: _keyValue,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: emailController,
-                    decoration:
-                        InputDecoration(hintText: 'email').custmDecoration,
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              Form(
+                  key: _keyValue,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration:
+                              InputDecoration(hintText: 'email').custmDecoration,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: passwordController,
+                          decoration:
+                              InputDecoration(hintText: 'password').custmDecoration,
+                        ),
+                      )
+                    ],
+                  )),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: () {
+                  context.read<AuthBloc>().add(SigninEvent(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    context: context
+                  ));
+                },
+                child: Text(
+                  'sign in',
+                  style: TextStyle(color: Colors.white),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: passwordController,
-                    decoration:
-                        InputDecoration(hintText: 'password').custmDecoration,
-                  ),
-                )
-              ],
-            )),
-        MaterialButton(
-          color: Colors.green,
-          onPressed: () {
-            context.read<AuthBloc>().add(SigninEvent(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim()));
-          },
-          child: Text(
-            'sign in',
-            style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(
+                height: 21,
+              ),
+              Text.rich(TextSpan(text: 'no have any account?', children: [
+                TextSpan(
+                    text: 'SignUp',
+                    style: TextStyle(
+                        color: Colors.blue, decoration: TextDecoration.underline),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => {replaceNextScreen(context, '/SignUpPage')})
+              ])),
+              SizedBox(
+                height: 10,
+              ),
+            ],
           ),
         ),
-        SizedBox(
-          height: 21,
-        ),
-        Text.rich(TextSpan(text: 'no have any account?', children: [
-          TextSpan(
-              text: 'SignUp',
-              style: TextStyle(
-                  color: Colors.blue, decoration: TextDecoration.underline),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => {replaceNextScreen(context, '/SignUpPage')})
-        ])),
       ],
     );
   }

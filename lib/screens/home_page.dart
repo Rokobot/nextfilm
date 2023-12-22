@@ -18,16 +18,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: SafeArea(
-          child: Center(
-            child: Text('Home page'),
+    return BlocProvider(
+      create: (context) => AuthBloc(),
+      child: Scaffold(
+          appBar: AppBar(),
+          body: SafeArea(
+            child: Center(
+              child: Text('Home page'),
+            ),
           ),
-        ),
-        drawer: BlocProvider(
-          create: (context) => AuthBloc(),
-          child: Drawer(child: DrawerUI()),
-        ));
+          drawer: Drawer(child: DrawerUI())),
+    );
   }
 }

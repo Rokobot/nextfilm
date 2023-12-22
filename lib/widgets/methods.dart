@@ -12,3 +12,8 @@ showSnackbar(context, message) {
   return ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text(message)));
 }
+
+
+removeUntilScreen(context,nameto , namefrom ) {
+  return Navigator.pushNamedAndRemoveUntil(context, nameto, ModalRoute.withName(namefrom));
+}

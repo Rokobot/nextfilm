@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/const/consts.dart';
 import 'package:nextfilm/helper/helper.dart';
-import 'package:nextfilm/services/auth_firebase_service.dart';
 import 'package:nextfilm/widgets/methods.dart';
 
 class DrawerUI extends StatefulWidget {
@@ -33,15 +32,10 @@ class _DrawerUIState extends State<DrawerUI> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthSignOut) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            return replaceNextScreen(context, '/SignInPage');
-          });
-        }
         return drawerMethod(context);
       },
     );
-    ;
+
   }
 
   Container drawerMethod(BuildContext context) {
@@ -59,7 +53,7 @@ class _DrawerUIState extends State<DrawerUI> {
                       color: Colors.blue,
                     ),
                     width: 150,
-                    height: 1550,
+                    height: 150,
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: CircleAvatar(
@@ -69,9 +63,9 @@ class _DrawerUIState extends State<DrawerUI> {
                       ),
                     ))),
             Divider(
-              indent: 50,
-              endIndent: 50,
-              thickness: 0.5,
+              indent: 10,
+              endIndent: 10,
+              thickness: 0.2,
               color: Colors.white,
             ),
             Card(
@@ -82,7 +76,7 @@ class _DrawerUIState extends State<DrawerUI> {
                   backgroundColor: backgroudnColor,
                   radius: 23,
                   child: Text(
-                    username.toString().toUpperCase().substring(0, 1),
+                    '',
                     style: TextStyle(fontSize: 30, color: Colors.blue),
                   ),
                 ),
@@ -96,6 +90,13 @@ class _DrawerUIState extends State<DrawerUI> {
             SizedBox(
               height: 10,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Text('Dark',style: TextStyle(color: Colors.white),),
+              SizedBox(width: 10,),
+              Switch(value: true, onChanged: (value){})
+            ],),
             Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
@@ -112,8 +113,10 @@ class _DrawerUIState extends State<DrawerUI> {
                         'logout',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () async {
-                        context.read<AuthBloc>().add(SignOutEvent());
+                      onPressed: ()  {
+                        context.read<AuthBloc>().add(SignOutEvent( context: context));
+
+
                       })),
             ),
             SizedBox(
@@ -125,3 +128,5 @@ class _DrawerUIState extends State<DrawerUI> {
     );
   }
 }
+
+
