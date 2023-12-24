@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
 import 'package:nextfilm/const/consts.dart';
 import 'package:nextfilm/helper/helper.dart';
+import 'package:nextfilm/services/auth_firebase_service.dart';
 import 'package:nextfilm/widgets/methods.dart';
 
 class DrawerUI extends StatefulWidget {
@@ -20,12 +22,13 @@ class _DrawerUIState extends State<DrawerUI> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HelperFunction().getDataFromSF().then((value) {
+    AuthFirebaseService(email: '', password: '',username: '').currentUserData().then((value) {
       setState(() {
         username = value['username'];
         email = value['email'];
       });
     });
+
   }
 
   @override
@@ -55,7 +58,7 @@ class _DrawerUIState extends State<DrawerUI> {
                     width: 150,
                     height: 150,
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      filter: ImageFilter.blur(sigmaX: 8 , sigmaY: 8),
                       child: CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.transparent,
@@ -76,15 +79,15 @@ class _DrawerUIState extends State<DrawerUI> {
                   backgroundColor: backgroudnColor,
                   radius: 23,
                   child: Text(
-                    '',
+                    username.toString().substring(0,1).toUpperCase() ?? 'O',
                     style: TextStyle(fontSize: 30, color: Colors.blue),
                   ),
                 ),
                 title: Text(
-                  username.toString(),
+                  username.toString() ?? 'loading...',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(email.toString()),
+                subtitle: Text(email.toString() ?? 'loading...'),
               ),
             ),
             SizedBox(
@@ -115,8 +118,6 @@ class _DrawerUIState extends State<DrawerUI> {
                       ),
                       onPressed: ()  {
                         context.read<AuthBloc>().add(SignOutEvent( context: context));
-
-
                       })),
             ),
             SizedBox(

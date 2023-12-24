@@ -66,30 +66,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //Signout fom the app
   SignoutMethd(SignOutEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    await AuthFirebaseService(email: '', password: '', username: '')
-        .getSignOut()
-        .then((value) {
-      if (value == true) {
-        return showDialog(context: event.context, builder: (BuildContext context){
-          return AlertDialog(
-            backgroundColor: backgroudnColor.withOpacity(0.9),
-            title: Text('signout', style: TextStyle(color: Colors.white),),
-            content: Text('are you sure signout ?', style: TextStyle(color: Colors.white),),
-            actions: [
-              ElevatedButton(onPressed: (){
+    return showDialog(context: event.context, builder: (BuildContext context){
+      return AlertDialog(
+        backgroundColor: backgroudnColor.withOpacity(0.9),
+        title: Text('signout', style: TextStyle(color: Colors.white),),
+        content: Text('are you sure signout ?', style: TextStyle(color: Colors.white),),
+        actions: [
+          ElevatedButton(onPressed: () async {
+            await AuthFirebaseService(email: '', password: '', username: '')
+                .getSignOut()
+                .then((value) {
+              if(value == true){
                 removeUntilScreen(context, '/SignInPage', '/HomePage');
                 emit(AuthSignOut());
-              }, child: Text('yes',style: TextStyle(color: Colors.white),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0),),),),),
-              ElevatedButton(onPressed: (){
-                Navigator.pop(event.context);
-              }, child: Text('no',style: TextStyle(color: Colors.white),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0),),),),),
-            ],
-          );
-        });
+              }else {
+                emit(AuthError(error: value));
+              }
+            });
 
-      } else {
-        emit(AuthError(error: value));
-      }
+          }, child: Text('yes',style: TextStyle(color: Colors.white),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0),),),),),
+          ElevatedButton(onPressed: (){
+            Navigator.pop(event.context);
+          }, child: Text('no',style: TextStyle(color: Colors.white),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0),),),),),
+        ],
+      );
     });
+
   }
 }
