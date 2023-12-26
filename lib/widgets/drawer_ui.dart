@@ -16,8 +16,8 @@ class DrawerUI extends StatefulWidget {
 }
 
 class _DrawerUIState extends State<DrawerUI> {
-  String? username;
-  String? email;
+  String username = '';
+  String  email = '';
   @override
   void initState() {
     // TODO: implement initState
@@ -79,15 +79,15 @@ class _DrawerUIState extends State<DrawerUI> {
                   backgroundColor: backgroudnColor,
                   radius: 23,
                   child: Text(
-                    username.toString().substring(0,1).toUpperCase() ?? 'O',
+                    username.toString()=='' ? 'loading...':username.toString().substring(0,1).toUpperCase() ?? 'O',
                     style: TextStyle(fontSize: 30, color: Colors.blue),
                   ),
                 ),
                 title: Text(
-                  username.toString() ?? 'loading...',
+                  username.toString()=='' ? 'loading...':username.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(email.toString() ?? 'loading...'),
+                subtitle: Text(email.toString()=='' ? 'loading...':email.toString()),
               ),
             ),
             SizedBox(
