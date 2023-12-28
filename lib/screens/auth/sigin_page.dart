@@ -23,6 +23,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController passwordController = TextEditingController();
   String? email;
   String? password;
+  bool _visibility = true;
 
   @override
   void initState() {
@@ -105,15 +106,26 @@ class _SignInPageState extends State<SignInPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFormField(
+                                obscureText: _visibility,
                                 controller: passwordController,
                                 decoration:
-                                InputDecoration(hintText: 'password').custmDecoration,
+                                InputDecoration(hintText: 'password', suffixIcon: IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      _visibility =! _visibility;
+                                    });
+                                  },
+                                  icon: _visibility ? Icon(Icons.visibility_off) :  Icon(Icons.visibility),
+                                )).custmDecoration,
                               ),
                             )
                           ],
                         )),
-                    MaterialButton(
-                      color: Colors.green,
+                    ElevatedButton(
+    style: ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Colors.green),
+    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+    ),
                       onPressed: () {
                         context.read<AuthBloc>().add(SigninEvent(
                             email: emailController.text.trim(),

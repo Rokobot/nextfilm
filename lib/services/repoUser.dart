@@ -28,6 +28,7 @@ class userRepository{
           itemCount: data.docs.length,
           itemBuilder: (context, index) {
             return Card(
+              elevation: 20,
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: backgroudnColor,

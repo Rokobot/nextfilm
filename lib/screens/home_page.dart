@@ -1,3 +1,4 @@
+import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nextfilm/bloc/bloc/auth_bloc.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           ),
           drawer: Drawer(child: DrawerUI()),
 
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: CustomNavigationBar(
           onTap: (value){
             setState(() {
               pageIndex = value;
@@ -46,12 +47,37 @@ class _HomePageState extends State<HomePage> {
             print(pageIndex);
 
           },
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           items: [
-            BottomNavigationBarItem(
-            icon: Icon(Icons.drive_file_move, color: Colors.red,), label: 'move'
-        ),
-            BottomNavigationBarItem(icon: Icon(Icons.verified_user_sharp, color: Colors.grey,),label: 'user'),
+            CustomNavigationBarItem(
+              icon: pageIndex == 0
+                  ? Icon(Icons.drive_file_move, color: Colors.red)
+                  : Icon(Icons.drive_file_move, color: Colors.white),
+              selectedIcon: pageIndex == 0
+                  ? Icon(Icons.drive_file_move, color: Colors.red)
+                  : Icon(Icons.drive_file_move, color: Colors.white),
+              title: pageIndex == 0
+                  ? Text('movie', style: TextStyle(color: Colors.red))
+                  : Text('movie', style: TextStyle(color: Colors.white)),
+              selectedTitle: pageIndex == 0
+                  ? Text('movie', style: TextStyle(color: Colors.red))
+                  : Text('movie', style: TextStyle(color: Colors.white)),
+            ),
+            CustomNavigationBarItem(
+              icon: pageIndex == 1
+                  ? Icon(Icons.verified_user_sharp, color: Colors.red)
+                  : Icon(Icons.verified_user_sharp, color: Colors.white),
+              selectedIcon: pageIndex == 1
+                  ? Icon(Icons.verified_user_sharp, color: Colors.red)
+                  : Icon(Icons.verified_user_sharp, color: Colors.white),
+              title: pageIndex == 1
+                  ? Text('users', style: TextStyle(color: Colors.red))
+                  : Text('users', style: TextStyle(color: Colors.white)),
+              selectedTitle: pageIndex == 1
+                  ? Text('users', style: TextStyle(color: Colors.red))
+                  : Text('users', style: TextStyle(color: Colors.white)),
+            ),
+
           ],
         ),
       ),

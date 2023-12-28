@@ -17,7 +17,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool _visibilty = false;
+  bool _visibilty = true;
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -135,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> {
       suffixIcon: IconButton(
       onPressed: () {
       setState(() {
-      _visibilty = !_visibilty;
+      _visibilty =! _visibilty;
       });
       },
       icon: Icon(_visibilty
@@ -146,8 +146,11 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       ],
       )),
-      MaterialButton(
-      color: Colors.green,
+      ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.green),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+      ),
       onPressed: () {
       validate();
       context.read<AuthBloc>().add(SignupEvent(

@@ -77,6 +77,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 .getSignOut()
                 .then((value) {
               if(value == true){
+                Navigator.pop(event.context);
                 removeUntilScreen(context, '/SignInPage', '/HomePage');
                 emit(AuthSignOut());
               }else {

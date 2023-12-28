@@ -32,17 +32,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    check();
-  }
-
-  check() {
-    // await HelperFunction().checkDataFromSf().then((value) {
-    //   setState(() {
-    //     user = value;
-    //   });
-    // });
-
-    //Checkout with firebase
   }
 
   @override
@@ -50,6 +39,7 @@ class _MyAppState extends State<MyApp> {
     return BlocProvider(
         create: (context) => AuthBloc(),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
             theme: ThemeData(primaryColor: backgroudnColor),
             routes: {
               '/HomePage': (context) => const HomePage(),
