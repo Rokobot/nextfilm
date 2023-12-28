@@ -5,6 +5,7 @@ This application shows you popular movies and series with the highest ratings by
 
 __PREVIEW__
 ![image(3)](https://github.com/Rokobot/nextfilm/assets/117278851/c31dfccf-948f-4da0-974e-e8358e355bf4)
+![WhatsApp Image 2023-12-29 at 12.07.17 AM.jpeg](..%2F..%2FDownloads%2FWhatsApp%20Image%202023-12-29%20at%2012.07.17%20AM.jpeg)
 
 __Package__
 
